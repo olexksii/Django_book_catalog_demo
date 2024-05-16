@@ -20,6 +20,11 @@ from django.urls import path
 # Use include() to add URLS from the catalog application and authentication system
 from django.urls import include
 
+from rest_framework import permissions
+from drf_yasg2.views import get_schema_view
+# from drf_yasg import openapi
+# from drf_yasg2 import generators
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -48,3 +53,22 @@ urlpatterns += [
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
 ]
+
+# schema_view = get_schema_view(
+#     openapi.Info(
+#         title="Your API",
+#         default_version="v1",
+#         description="API documentation",
+#         terms_of_service="https://localhost:8000",
+#         # contact=openapi.Contact(email="your-contact-email@example.com"),
+#         # license=openapi.License(name="Your License"),
+#     ),
+#     public=True,
+#     permission_classes=(permissions.AllowAny,),
+# )
+
+# urlpatterns += [
+#     path("swagger/", schema_view.with_ui("swagger"), name="swagger"),
+#     # path("redoc/", schema_view.with_ui("redoc"), name="redoc"),
+#     # path("api/", include("your_app.urls")),
+# ]
