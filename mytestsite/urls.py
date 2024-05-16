@@ -20,8 +20,8 @@ from django.urls import path
 # Use include() to add URLS from the catalog application and authentication system
 from django.urls import include
 
-from rest_framework import permissions
-from drf_yasg2.views import get_schema_view
+# from rest_framework import permissions
+# from drf_yasg2.views import get_schema_view
 # from drf_yasg import openapi
 # from drf_yasg2 import generators
 

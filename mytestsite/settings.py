@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     # 'app',
     # 'rest_framework_swagger',
     # 'rest_framework',
-    'drf_yasg2',
+    # 'drf_yasg2',
 ]
 
 # SWAGGER_SETTINGS = {
