@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'catalog.apps.CatalogConfig',
-    # 'app',
-    # 'rest_framework_swagger',
-    # 'rest_framework',
-    # 'drf_yasg2',
+    'app',
+    'rest_framework_swagger',
+    'rest_framework',
+    'drf_yasg',
 ]
+
+ROOT_URLCONF = 'django_rest_swagger.urls'
 
 # SWAGGER_SETTINGS = {
 #     'USE_SESSION_AUTH': False,

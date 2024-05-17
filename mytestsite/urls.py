@@ -16,36 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
-# Use include() to add URLS from the catalog application and authentication system
 from django.urls import include
-
-# from rest_framework import permissions
-# from drf_yasg2.views import get_schema_view
-# from drf_yasg import openapi
-# from drf_yasg2 import generators
-
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-
 urlpatterns += [
     path('catalog/', include('catalog.urls')),
 ]
 
-
-# Use static() to add url mapping to serve static files during development (only)
-from django.conf import settings
-from django.conf.urls.static import static
-
-
 urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-
-# Add URL maps to redirect the base URL to our application
-from django.views.generic import RedirectView
 urlpatterns += [
     path('', RedirectView.as_view(url='/catalog/', permanent=True)),
 ]
@@ -54,21 +42,21 @@ urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 
-# schema_view = get_schema_view(
-#     openapi.Info(
-#         title="Your API",
-#         default_version="v1",
-#         description="API documentation",
-#         terms_of_service="https://localhost:8000",
-#         # contact=openapi.Contact(email="your-contact-email@example.com"),
-#         # license=openapi.License(name="Your License"),
-#     ),
-#     public=True,
-#     permission_classes=(permissions.AllowAny,),
-# )
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Your API Title",
+        default_version="v1",
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
-# urlpatterns += [
-#     path("swagger/", schema_view.with_ui("swagger"), name="swagger"),
-#     # path("redoc/", schema_view.with_ui("redoc"), name="redoc"),
-#     # path("api/", include("your_app.urls")),
-# ]
+urlpatterns += [
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0),
+         name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger',
+         cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc',
+         cache_timeout=0), name='schema-redoc'),
+    path('admin/', admin.site.urls),
+]

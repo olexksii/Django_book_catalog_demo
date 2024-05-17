@@ -5,6 +5,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 import numpy
+
+from drf_yasg import openapi
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from drf_yasg.utils import swagger_auto_schema
+
 def index(request):
     num_books = Book.objects.all().count()
     num_instances = BookInstance.objects.all().count()
@@ -33,7 +39,7 @@ def index(request):
 
 from django.views import generic
 
-class BookListView(generic.ListView):
+class BookListView(generic.ListView, APIView):
     model = Book
     paginate_by = 10
     # context_object_name = 'book_list'
@@ -48,10 +54,10 @@ class BookListView(generic.ListView):
     #     context['some_data'] = 'This is just some data'
     #     return context
 
-class BookDetailView(generic.DetailView):
+class BookDetailView(generic.DetailView, APIView):
     model = Book
 
-class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
+class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView, APIView):
     model = BookInstance
     template_name = 'catalog/bookinstance_list_borrowed_user.html'
     paginate_by = 10
@@ -63,11 +69,11 @@ class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
             .order_by('due_back')
         )
 
-class AuthorListView(generic.ListView):
+class AuthorListView(generic.ListView, APIView):
     model = Author
     paginate_by = 10
 
-class AuthorDetailView(generic.DetailView):
+class AuthorDetailView(generic.DetailView, APIView):
     model = Author
 
 # Create your views here.
@@ -112,18 +118,18 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Author
 
-class AuthorCreate(PermissionRequiredMixin, CreateView):
+class AuthorCreate(PermissionRequiredMixin, CreateView, APIView):
     model = Author
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
     initial = {'date_of_death': '11/11/2023'}
     permission_required = 'catalog.add_author'
 
-class AuthorUpdate(PermissionRequiredMixin, UpdateView):
+class AuthorUpdate(PermissionRequiredMixin, UpdateView, APIView):
     model = Author
     fields = '__all__'
     permission_required = 'catalog.change_author'
 
-class AuthorDelete(PermissionRequiredMixin, DeleteView):
+class AuthorDelete(PermissionRequiredMixin, DeleteView, APIView):
     model = Author
     success_url = reverse_lazy('authors')
     permission_required = 'catalog.delete_author'
